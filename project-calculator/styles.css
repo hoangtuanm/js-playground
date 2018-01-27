@@ -1,0 +1,4 @@
+/* Hide display for Loading, and Result */
+#loading, #results {
+  display: none;
+}
