@@ -7,8 +7,30 @@ class Counter extends React.Component {
       
       // Set state
       this.state = {
-        count: props.count
-      }
+        count: 0 // Not needed as data persistance is taking over
+      } 
+  }
+
+  componentDidMount() {
+    const stringCount = localStorage.getItem('count');
+    const count = parseInt(stringCount, 10);
+
+    if (!isNaN(count)) {
+      this.setState(() => ({ count }));
+      console.log('Data fetched.');
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.count !== this.state.count) {
+      localStorage.setItem('count', this.state.count);
+      //console.log('Saving data to localStorage...')
+      console.log(`Count: ${this.state.count}`);
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount')
   }
 
   handleAddOne() {
@@ -34,7 +56,6 @@ class Counter extends React.Component {
       };
     });
   }
-
   render() {
     return (
       <div>
@@ -47,8 +68,9 @@ class Counter extends React.Component {
   }
 }
 
-Counter.defaultProps = {
-  count: 0
-};
+// Not needed as data persistance is taking over
+// Counter.defaultProps = {
+//   count: 0
+// };
 
-ReactDOM.render(<Counter count={3}/>, document.getElementById('app'));
+ReactDOM.render(<Counter />, document.getElementById('app'));
